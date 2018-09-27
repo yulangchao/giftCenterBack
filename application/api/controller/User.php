@@ -14,7 +14,7 @@ use think\Validate;
 class User extends Api
 {
 
-    protected $noNeedLogin = ['login', 'mobilelogin', 'register', 'resetpwd', 'changeemail', 'changemobile', 'third'];
+    protected $noNeedLogin = ['login', 'mobilelogin', 'register', 'resetpwd', 'changeemail', 'changemobile', 'third','googleMobileLogin'];
     protected $noNeedRight = '*';
 
     public function _initialize()
@@ -99,6 +99,44 @@ class User extends Api
             $this->error($this->auth->getError());
         }
     }
+
+
+    /**
+     * Google手机验证码登录拿取accesstoken
+     * 
+     * @param string $mobile 手机号
+     * @param string $uid uid
+     */
+     public function googleMobileLogin()
+     {
+         $mobile = $this->request->request('mobile');
+         $uid = $this->request->request('uid');
+         if (!$mobile || !$uid)
+         {
+             $this->error(__('Invalid parameters'));
+         }
+
+         $user = $this->auth->login($mobile, $uid);
+         if ($user)
+         {
+            $data = ['userinfo' => $this->auth->getUserinfo()];
+            $this->success(__('Logged in successful'), $data);
+         }
+         else
+         {
+             $ret = $this->auth->register($mobile, $uid, '', $mobile, []);
+         }
+         if ($ret)
+         {
+             $data = ['userinfo' => $this->auth->getUserinfo()];
+             $this->success(__('Logged in successful'), $data);
+         }
+         else
+         {
+             $this->error($this->auth->getError());
+         }
+     }
+
 
     /**
      * 注册会员
