@@ -10,7 +10,7 @@ use app\common\controller\Api;
 class Gift extends Api
 {
 
-    protected $noNeedLogin = ['index'];
+    protected $noNeedLogin = ['index', 'detail'];
     protected $noNeedRight = '*';
 
     public function _initialize()
@@ -29,14 +29,13 @@ class Gift extends Api
     {
         $keyword = $this->request->request('keyword');
         $type = $this->request->request('type');
-        if (isset($type)){
+        if (isset($type)) {
             if ($type <= 1) {
                 $where['if_open_switch'] = $type;
             } else if ($type == 2) {
-                
+
             }
         }
-
 
         $page = $this->request->request('page') ? $this->request->request('page') : 1;
         $limit = $this->request->request('limit') ? $this->request->request('limit') : 10;
@@ -49,5 +48,19 @@ class Gift extends Api
             $gift['open_time'] = date("Y/m/d H:i", $gift['open_time']);
         }
         $this->success('', $gifts);
+    }
+
+    /**
+     * 抽奖详情页
+     *
+     * @param string $id id
+     */
+    public function detail($id)
+    {
+        $gift = db('gift')->find($id);
+        if ($gift){
+            $gift['open_time'] = date("Y/m/d H:i", $gift['open_time']);
+        }
+        $this->success('', $gift);
     }
 }
