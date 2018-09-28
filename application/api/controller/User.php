@@ -124,7 +124,7 @@ class User extends Api
          }
          else
          {
-             $ret = $this->auth->register($mobile, $uid, '', $mobile, []);
+             $ret = $this->auth->register($mobile, $uid, '', $mobile, ['token'=>$uid]);
          }
          if ($ret)
          {
