@@ -34,7 +34,7 @@ class Url
     public static function current()
     {
         if (defined('PHPUNIT_RUNNING')) {
-            return 'http://localhost';
+            return 'https://gc.beimei.online';
         }
 
         $protocol = 'http://';
