@@ -10,7 +10,7 @@ use app\api\model\Record;
 class Gift extends Api
 {
 
-    protected $noNeedLogin = ['index', 'detail'];
+    protected $noNeedLogin = ['index', 'detail','openGift'];
     protected $noNeedRight = '*';
 
     public function _initialize()
@@ -113,5 +113,52 @@ class Gift extends Api
             $this->success('参加成功！', ['result'=>$result]);
         }
 
+    }
+
+
+    public function openGift()
+    {
+
+        $current_time = time();
+        $where['open_time'] = ['elt', $current_time - 54000];
+        $where['if_open_switch'] = 0;
+        $where['if_active_switch'] = 1;
+        $gifts = db('gift')->where($where)->select();
+        dump($gifts);
+        foreach ($gifts as $k => $gift) {
+
+            $records = db('record')->where(['gift_id' => $gift['id']])->select();
+            dump($records);
+            $pools = [];
+            foreach ($records as $k => $record) {
+                for ($i = 0; $i < $record['rate']; $i++) {
+                    $pools[] = $record['user_id'];
+                }
+
+            }
+            dump($pools);
+            for ($j = 0; $j < $gift['item_number']; $j++) {
+                if ($j == 0) {
+                    $lucky_number[] = $pools[rand(0, sizeof($pools) - 1)];
+                    dump("第" . $j);
+                    dump($lucky_number);
+                } else {
+                    $temp_user_id = $pools[rand(0, sizeof($pools) - 1)];
+                    while (in_array($temp_user_id, $lucky_number)) {
+                        $temp_user_id = $pools[rand(0, sizeof($pools) - 1)];
+                    }
+                    dump("第" . $j);
+                    $lucky_number[] = $temp_user_id;
+                    dump($lucky_number);
+
+                }
+
+            }
+            foreach ($lucky_number as $k => $user_id) {
+                db('record')->where(['user_id' => $user_id, 'gift_id' => $gift['id']])->update(['if_get_switch' => 1]);
+            }
+            model('gift')->update(['id' => $gift['id'], 'if_open_switch' => 1]);
+
+        }
     }
 }
