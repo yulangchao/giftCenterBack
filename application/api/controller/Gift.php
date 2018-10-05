@@ -65,6 +65,7 @@ class Gift extends Api
     public function detail($id)
     {
         $gift = db('gift')->find($id);
+        $gift = db('gift')->where('id', $id)->setInc('views');
         $user = $this->auth->getUser();
         if ($gift) {
             $gift['open_time'] = date("Y/m/d H:i", $gift['open_time']);
@@ -81,6 +82,7 @@ class Gift extends Api
                 $gift['if_attend'] = false;
             }
         }
+
         $this->success('', $gift);
     }
 
