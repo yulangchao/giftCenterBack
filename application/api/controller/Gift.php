@@ -77,8 +77,9 @@ class Gift extends Api
             $gift['top10'] = $temp_top;
 
             $temp_get = db('record')->alias('r')->join('user u', 'r.user_id = u.id', 'LEFT')->where(['gift_id' => $gift['id'],'if_get_switch'=>1])->order('rate desc')->field('r.*,u.mobile')->select();
+            
             foreach ($temp_get as $k => &$get) {
-                $get['mobile'] = substr_replace($top['mobile'], "***", 3, 3);
+                $get['mobile'] = substr_replace($get['mobile'], "***", 3, 3);
             }
             $gift['get'] = $temp_get;
              
