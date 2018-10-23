@@ -34,7 +34,12 @@ class Gift extends Api
             if ($type <= 1) {
                 $where['if_open_switch'] = $type;
             } else if ($type == 2) {
-
+                $records = db('record')->where(['user_id' => $user->id])->field('gift_id')->select();
+                $record_ids = array_map(function($r){
+                    return $r['gift_id'];
+                },$records);
+                $where['id'] = ['in',$record_ids];
+                
             }
         }
 
