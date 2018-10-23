@@ -58,6 +58,12 @@ class Gift extends Api
                 $gift['if_attend'] = false;
             }
 
+            if ($user) {
+                $gift['if_get'] = db('record')->where(['user_id' => $user->id, 'gift_id' => $gift['id'], 'if_get_switch'=>1])->find() ? true : false;
+            } else {
+                $gift['if_get'] = false;
+            }
+
         }
         $this->success('', $gifts);
     }
