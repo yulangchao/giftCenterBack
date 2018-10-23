@@ -99,6 +99,7 @@ class Gift extends Api
             } else {
                 $gift['if_attend'] = false;
             }
+            $gift['attends'] = db('record')->where(['gift_id' => $gift['id']])->count();
         }
 
         $this->success('', $gift);
