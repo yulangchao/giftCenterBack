@@ -44,7 +44,7 @@ class Gift extends Api
 
         $where['item_title|company_name|company_content'] = ['like', '%' . $keyword . '%'];
 
-        $gifts = db('gift')->where($where)->->order('open_time desc')limit($offset, $limit)->select();
+        $gifts = db('gift')->where($where)->order('open_time desc')->limit($offset, $limit)->select();
         foreach ($gifts as $k => &$gift) {
             $gift['open_time'] = date("Y/m/d H:i", $gift['open_time']);
             if ($user) {
