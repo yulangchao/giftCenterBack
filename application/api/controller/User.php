@@ -38,8 +38,9 @@ class User extends Api
      */
     public function login()
     {
-        $account = $this->request->request('account');
-        $password = $this->request->request('password');
+        $account = $this->request->request('mobile');
+        $password = $this->request->request('pwd');
+        $cid = $this->request->request('cid');
         if (!$account || !$password)
         {
             $this->error(__('Invalid parameters'));
@@ -48,6 +49,11 @@ class User extends Api
         if ($ret)
         {
             $data = ['userinfo' => $this->auth->getUserinfo()];
+
+            $user = $this->auth->getUser();
+            $user->cid = $cid;
+            $user->save();
+
             $this->success(__('Logged in successful'), $data);
         }
         else
@@ -148,8 +154,9 @@ class User extends Api
      */
     public function register()
     {
-        $username = $this->request->request('username');
-        $password = $this->request->request('password');
+        // $username = $this->request->request('username');
+        $username = $this->request->request('mobile');
+        $password = $this->request->request('pwd');
         $email = $this->request->request('email');
         $mobile = $this->request->request('mobile');
         if (!$username || !$password)
@@ -160,7 +167,7 @@ class User extends Api
         {
             $this->error(__('Email is incorrect'));
         }
-        if ($mobile && !Validate::regex($mobile, "^1\d{10}$"))
+        if ($mobile && !Validate::regex($mobile, "^\d{10}$"))
         {
             $this->error(__('Mobile is incorrect'));
         }

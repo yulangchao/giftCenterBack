@@ -53,7 +53,7 @@ class Sms
         $time = time();
         $ip = request()->ip();
         $sms = \app\common\model\Sms::create(['event' => $event, 'mobile' => $mobile, 'code' => $code, 'ip' => $ip, 'createtime' => $time]);
-        $result = Hook::listen('sms_send', $sms, null, true);
+        $result = sendSMS($mobile,$code);
         if (!$result)
         {
             $sms->delete();
@@ -108,8 +108,8 @@ class Sms
                 }
                 else
                 {
-                    $result = Hook::listen('sms_check', $sms, null, true);
-                    return $result;
+                    // $result = Hook::listen('sms_check', $sms, null, true);
+                    return $correct;
                 }
             }
             else

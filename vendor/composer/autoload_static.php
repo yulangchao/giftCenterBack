@@ -26,6 +26,10 @@ class ComposerStaticInitdf60d10545adad3db5805ea949dd9bc7
             'think\\captcha\\' => 14,
             'think\\' => 6,
         ),
+        'T' => 
+        array (
+            'Twilio\\' => 7,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Php70\\' => 23,
@@ -83,6 +87,10 @@ class ComposerStaticInitdf60d10545adad3db5805ea949dd9bc7
         array (
             0 => __DIR__ . '/..' . '/karsonzhang/fastadmin-addons/src',
             1 => __DIR__ . '/../..' . '/thinkphp/library/think',
+        ),
+        'Twilio\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/twilio/sdk/Twilio',
         ),
         'Symfony\\Polyfill\\Php70\\' => 
         array (
