@@ -56,7 +56,6 @@ class Index extends Frontend
             "code"=> 1,
             "data"=> $posts,
             "msg"=> "",
-            "keywords"=> $condition['keywords'],
             "time"=> time()
         ];
         return json($data);
