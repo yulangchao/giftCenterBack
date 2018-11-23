@@ -33,7 +33,6 @@ function search($text = "温哥华知道吧crab")
         }
     }
 
-       
 
      
     return $condition;  
