@@ -54,6 +54,9 @@ class Index extends Frontend
         if ($posts){
             $posts[0]['keywords'] = isset($condition['keywords'])?$condition['keywords']: [];
         }
+        foreach ($posts as $key => &$post) {
+           $post['content'] = strip_tags($post['content']);
+        }
         $data = [
             "code"=> 1,
             "data"=> $posts,

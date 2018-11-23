@@ -57,13 +57,13 @@
                             subClass = "";
                             break;
                     }
-                    if (lock){
-                        html += `<li class="bui-btn bui-box">
+
+                    html += `<li class="bui-btn bui-box">
                                 <div class="bui-thumbnail ${subClass}" data-sub="${sub}"><img src="${
                         el.post_images
                     }" alt=""></div>
                                 <div class="span1">
-                                    <h3 class=""  ref="buiList">${el.title.replace(re, (matched) =>{
+                                    <h3 class="item-title"  ref="buiList">${el.title.replace(re, (matched) =>{
                                     return `<span style='color:red'>${matched}</span>`
                                     })}</h3>
                                     <p class="item-text"  ref="buiList1">${el.address}</p>
@@ -73,20 +73,6 @@
                                 </div>
                                 <span class="price">${el.views}</span>
                             </li>`;
-                    }else{
-                        html += `<li class="bui-btn bui-box">
-                                <div class="bui-thumbnail ${subClass}" data-sub="${sub}"><img src="${
-                        el.post_images
-                    }" alt=""></div>
-                                <div class="span1">
-                                    <h3 class=""  ref="buiList">${el.title}</h3>
-                                    <p class="item-text"  ref="buiList1">${el.address}</p>
-                                    <p class="item-text"  ref="buiList2">${el.content}</p>
-                                </div>
-                                <span class="price">${el.views}</span>
-                            </li>`;
-                    }
-
                 });
 
                 return html;
