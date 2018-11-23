@@ -32,9 +32,8 @@
                 data: "data"
             },
             template: function(data) {
-                console.log(data[0])
                 var html = "";
-                if(!lock){
+                if(!lock && data.length>0){
                     var replace = data[0].keywords.join('|');
                     var re = new RegExp(replace,"gi");
                     lock = true;
