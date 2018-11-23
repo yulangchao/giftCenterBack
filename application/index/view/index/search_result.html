@@ -1,0 +1,195 @@
+<link rel="stylesheet" href="https://unpkg.com/buijs/lib/latest/bui.css" />
+<!-- bui.js 依赖于Zepto或jQuery -->
+<script src="https://unpkg.com/buijs/lib/zepto.js"></script>
+<script src="https://unpkg.com/buijs/lib/latest/bui.js"></script>
+<style>
+    .el-col-24 {
+        margin: 3px 0px;
+    }
+    .el-select {
+        width: 100%;
+    }
+    .bui-list .bui-btn .icon-facefill {
+        font-size: 0.4rem;
+        margin-right: 0.2rem;
+    }
+</style>
+<script>
+    let lock = false;
+    bui.ready(function() {
+        var uiList = bui.list({
+            id: "#scrollList",
+            url: "/index/index/getInfo",
+            pageSize: 10,
+            data: {
+                keyword: '{:I('keyword')}',
+                city_id: '{:I('city_id')}'
+            },
+            //如果分页的字段名不一样,通过field重新定义
+            field: {
+                page: "page",
+                limit: "pageSize",
+                data: "data"
+            },
+            template: function(data) {
+                console.log(data[0])
+                var html = "";
+                if(!lock){
+                    var replace = data[0].keywords.join('|');
+                    var re = new RegExp(replace,"gi");
+                    lock = true;
+                }
+
+                data.map(function(el, index) {
+                    // 处理角标状态
+                    var sub = "",
+                        subClass = "";
+                    switch (el.status) {
+                        case 1:
+                            sub = "新品";
+                            subClass = "bui-sub";
+                            break;
+                        case 2:
+                            sub = "热门";
+                            subClass = "bui-sub danger";
+                            break;
+                        default:
+                            sub = "";
+                            subClass = "";
+                            break;
+                    }
+
+                    html += `<li class="bui-btn bui-box">
+                                <div class="bui-thumbnail ${subClass}" data-sub="${sub}"><img src="${
+                        el.post_images
+                    }" alt=""></div>
+                                <div class="span1">
+                                    <h3 class="item-title"  ref="buiList">${el.title.replace(re,"<span style='color:red'>12</span>")}</h3>
+                                    <p class="item-text"  ref="buiList1">${el.address}</p>
+                                    <p class="item-text"  ref="buiList2">${el.content.replace(re, (matched) =>{
+                                    return `<span style='color:red'>${matched}</span>`
+                                    })}</p>
+                                </div>
+                                <span class="price">${el.views}</span>
+                            </li>`;
+                });
+
+                return html;
+            }
+        });
+    });
+</script>
+<div id="app" style="margin-top:50px;">
+    <el-row :gutter="10">
+        <el-col :xs="2" :sm="6"> &nbsp; </el-col>
+        <el-col :xs="20" :sm="6">
+            <el-input placeholder="请输入关键字" v-model="keyword" clearable>
+            </el-input>
+        </el-col>
+        <el-col :xs="2" :sm="0" style="height:40px;">
+            <span>&nbsp;</span>
+        </el-col>
+        <el-col :xs="2" :sm="0">
+            <span style="height:40px;">&nbsp;</span>
+        </el-col>
+        <el-col :xs="20" :sm="4">
+            <el-select
+                v-model="city_id"
+                multiple
+                filterable
+                remote
+                reserve-keyword
+                placeholder="请选择城市"
+                :remote-method="remoteMethod"
+                :loading="loading"
+            >
+                <el-option
+                    v-for="item in options4"
+                    :key="item.id"
+                    :label="item.city_name"
+                    :value="item.id"
+                >
+                </el-option>
+            </el-select>
+        </el-col>
+        <el-col :xs="2" :sm="0" style="height:40px;">
+            <span>&nbsp;</span>
+        </el-col>
+        <el-col :xs="2" :sm="0" style="height:40px;">
+            <span>&nbsp;</span>
+        </el-col>
+        <el-col :xs="20" :sm="2" style="text-align: center">
+            <el-button
+                type="primary"
+                style="max-width:100%;width:300px;"
+                icon="el-icon-search"
+                @click="search"
+                >搜索</el-button
+            >
+        </el-col>
+        <el-col :xs="2" :sm="6" style="height:40px;">
+            <span>&nbsp;</span>
+        </el-col>
+    </el-row>
+    <el-row :gutter="10"> </el-row>
+    <el-row>
+        <el-col :xs="1" :sm="6"> &nbsp; </el-col>
+        <el-col :xs="22" :sm="12">
+            <div id="scrollList" class="bui-scroll">
+                <div class="bui-scroll-head"></div>
+                <div class="bui-scroll-main" id="bui-list">
+                    <ul class="bui-list bui-list-thumbnail"></ul>
+                </div>
+                <div class="bui-scroll-foot"></div>
+            </div>
+        </el-col>
+
+        <el-col :xs="1" :sm="6"> &nbsp; </el-col>
+    </el-row>
+</div>
+
+<script>
+    var app = new Vue({
+        el: "#app",
+        data() {
+            return {
+                options4: [],
+                keyword: "",
+                city_id: [],
+                list: [],
+                loading: false,
+                list: [
+                    { value: 0, label: "Vancouver" },
+                    { value: 1, label: "Richmond" }
+                ]
+            };
+        },
+        mounted() {
+            this.keyword = '{:I("keyword")}';
+            this.city_id = '{:convert_city_id_to_name(I("city_id"))}'
+                ? '{:convert_city_id_to_name(I("city_id"))}'.split(",")
+                : "";
+        },
+        methods: {
+            search() {
+                location.href = `/index/index/search_result?keyword=${
+                    this.keyword
+                }&city_id=${this.city_id.join(",")}`;
+            },
+            remoteMethod(query) {
+                if (query !== "") {
+                    this.loading = true;
+
+                    axios
+                        .get("/index/index/getCities?city_name=" + query)
+                        .then(response => {
+                            this.loading = false;
+                            this.options4 = response.data;
+                        });
+                } else {
+                    this.options4 = [];
+                }
+            }
+        }
+    });
+</script>
