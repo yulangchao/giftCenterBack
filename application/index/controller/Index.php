@@ -29,6 +29,7 @@ class Index extends Frontend
         $keyword = $this->request->request('keyword');
         $city_id = $this->request->request('city_id');
         $condition = search($keyword);
+        $where = [];
         $type = $this->request->request('type');
         if (isset($type)) {
             if ($type <= 1) {
@@ -46,9 +47,10 @@ class Index extends Frontend
         $page = $this->request->request('page') ? $this->request->request('page') : 1;
         $limit = $this->request->request('limit') ? $this->request->request('limit') : 10;
         $offset = ($page - 1) * $limit;
+        
+        $city_id && $where['city_id'] = ['in',$city_id];
+        $posts = db('posts')->where($where)->whereRaw($condition['where'])->field('*,'.$condition['order'].'as weight')->order('weight desc, id desc')->limit($offset, $limit)->select();
 
-
-        $posts = db('posts')->where('city_id','in',$city_id)->whereRaw($condition['where'])->field('*,'.$condition['order'].'as weight')->order('weight desc, id desc')->limit($offset, $limit)->select();
         if ($posts){
             $posts[0]['keywords'] = isset($condition['keywords'])?$condition['keywords']: [];
         }
