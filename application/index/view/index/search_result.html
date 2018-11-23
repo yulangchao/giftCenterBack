@@ -63,7 +63,9 @@
                         el.post_images
                     }" alt=""></div>
                                 <div class="span1">
-                                    <h3 class="item-title"  ref="buiList">${el.title.replace(re,"<span style='color:red'>12</span>")}</h3>
+                                    <h3 class=""  ref="buiList">${el.title.replace(re, (matched) =>{
+                                    return `<span style='color:red'>${matched}</span>`
+                                    })}</h3>
                                     <p class="item-text"  ref="buiList1">${el.address}</p>
                                     <p class="item-text"  ref="buiList2">${el.content.replace(re, (matched) =>{
                                     return `<span style='color:red'>${matched}</span>`
@@ -155,22 +157,30 @@
                 options4: [],
                 keyword: "",
                 city_id: [],
+                city_name: [],
                 list: [],
-                loading: false,
-                list: [
-                    { value: 0, label: "Vancouver" },
-                    { value: 1, label: "Richmond" }
-                ]
+                loading: false
             };
         },
         mounted() {
             this.keyword = '{:I("keyword")}';
             this.city_id = '{:convert_city_id_to_name(I("city_id"))}'
-                ? '{:convert_city_id_to_name(I("city_id"))}'.split(",")
-                : "";
+                ? '{:I("city_id")}'.split(",")
+                : [];
+            this.city_name = '{:convert_city_id_to_name(I("city_id"))}'
+            ? '{:convert_city_id_to_name(I("city_id"))}'.split(",")
+            : [];  
+                setTimeout(() => {
+                    $('.el-select__tags-text').map((index, el ) => {
+                        el.innerHTML =  this.city_name[index];
+                    })
+
+                }, 0);
+            
         },
         methods: {
             search() {
+
                 location.href = `/index/index/search_result?keyword=${
                     this.keyword
                 }&city_id=${this.city_id.join(",")}`;
