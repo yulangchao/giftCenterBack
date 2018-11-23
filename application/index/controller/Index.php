@@ -50,7 +50,7 @@ class Index extends Frontend
 
         $posts = db('posts')->where('city_id','in',$city_id)->whereRaw($condition['where'])->field('*,'.$condition['order'].'as weight')->order('weight desc, id desc')->limit($offset, $limit)->select();
         if ($posts){
-            $posts[0]['keywords'] = $condition['keywords'];
+            $posts[0]['keywords'] = isset($condition['keywords'])?$condition['keywords']: [];
         }
         $data = [
             "code"=> 1,
