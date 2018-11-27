@@ -15,10 +15,26 @@ class Index extends Frontend
     public function _initialize()
     {
         parent::_initialize();
+        $this->model = new \app\admin\model\Posts;
     }
 
     public function index()
     {
+        return $this->view->fetch();
+    }
+    
+    public function add()
+    {
+        return $this->view->fetch();
+    }
+
+    public function detail($id)
+    {
+        $detail = $this->model
+        ->with(['cities'])
+        ->find($id);
+        $detail = $detail->toArray();
+        $this->view->assign('detail', $detail);
         return $this->view->fetch();
     }
 
@@ -56,6 +72,7 @@ class Index extends Frontend
         }
         foreach ($posts as $key => &$post) {
            $post['content'] = strip_tags($post['content']);
+           $post['city_name'] = get_city_name($post['city_id']);
         }
         $data = [
             "code"=> 1,

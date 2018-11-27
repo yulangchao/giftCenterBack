@@ -44,6 +44,11 @@ function convert_city_id_to_name($city_id){
     },$cities);
     return join(',',$cities);
 }
+
+function get_city_name($city_id){
+    $city = db('cities')->where('id','in',$city_id)->find();
+    return $city? $city['city_name']:"";
+}
 function I($name, $default = '', $filter = null, $datas = null) {
 	if (strpos ( $name, '.' )) { // 指定参数来源
 		list ( $method, $name ) = explode ( '.', $name, 2 );

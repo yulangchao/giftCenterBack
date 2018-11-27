@@ -8,9 +8,10 @@ define([], function () {
     }
 });
 require(['form', 'upload'], function (Form, Upload) {
+    
     var _bindevent = Form.events.bindevent;
     Form.events.bindevent = function (form) {
-        _bindevent.apply(this, [form]);
+        
         try {
             //绑定summernote事件
             if ($(".summernote,.editor", form).size() > 0) {

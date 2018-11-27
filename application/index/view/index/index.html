@@ -11,11 +11,15 @@
         width: 100%;
     }
 </style>
-<div id="app" style="margin-top:300px;">
-        
-    <el-row :gutter="10">
+
+<div id="app" style="margin-top:100px;">
+    <el-row style="text-align: center">
+            <img style="height:100%" src="/assets/img/casou.png"/>
+    </el-row>
+    <el-row :gutter="10"  style="margin-top:50px;">
         <el-col :xs="2" :sm="6"> &nbsp; </el-col>
         <el-col :xs="20" :sm="6">
+                
             <el-input placeholder="请输入关键字" v-model="keyword" clearable>
             </el-input>
         </el-col>
@@ -67,6 +71,7 @@
 </div>
 
 <script>
+
     var app = new Vue({
         el: "#app",
         data() {
@@ -77,56 +82,7 @@
                 list: [],
                 loading: false,
                 states: [
-                    "Alabama",
-                    "Alaska",
-                    "Arizona",
-                    "Arkansas",
-                    "California",
-                    "Colorado",
-                    "Connecticut",
-                    "Delaware",
-                    "Florida",
-                    "Georgia",
-                    "Hawaii",
-                    "Idaho",
-                    "Illinois",
-                    "Indiana",
-                    "Iowa",
-                    "Kansas",
-                    "Kentucky",
-                    "Louisiana",
-                    "Maine",
-                    "Maryland",
-                    "Massachusetts",
-                    "Michigan",
-                    "Minnesota",
-                    "Mississippi",
-                    "Missouri",
-                    "Montana",
-                    "Nebraska",
-                    "Nevada",
-                    "New Hampshire",
-                    "New Jersey",
-                    "New Mexico",
-                    "New York",
-                    "North Carolina",
-                    "North Dakota",
-                    "Ohio",
-                    "Oklahoma",
-                    "Oregon",
-                    "Pennsylvania",
-                    "Rhode Island",
-                    "South Carolina",
-                    "South Dakota",
-                    "Tennessee",
-                    "Texas",
-                    "Utah",
-                    "Vermont",
-                    "Virginia",
-                    "Washington",
-                    "West Virginia",
-                    "Wisconsin",
-                    "Wyoming"
+                    "Alabama"
                 ]
             };
         },

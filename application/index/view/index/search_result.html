@@ -13,6 +13,19 @@
         font-size: 0.4rem;
         margin-right: 0.2rem;
     }
+    .item-text,.bui-loading .bui-loading-text,.bui-scroll-head{
+        font-size: 16px;
+    }
+    .bui-thumbnail {
+        height: 100%;
+        margin-right: 0.5rem !important;
+    }
+    #search-body {
+        border-bottom: 1px solid #d4c5c5;
+        padding-bottom: 20px;
+    }
+
+
 </style>
 <script>
     let lock = false;
@@ -58,7 +71,7 @@
                             break;
                     }
 
-                    html += `<li class="bui-btn bui-box">
+                    html += `<li class="bui-btn bui-box" onclick="location.href='/index/index/detail?id=${el.id}'">
                                 <div class="bui-thumbnail ${subClass}" data-sub="${sub}"><img src="${
                         el.post_images
                     }" alt=""></div>
@@ -66,12 +79,12 @@
                                     <h3 class="item-title"  ref="buiList">${el.title.replace(re, (matched) =>{
                                     return `<span style='color:red'>${matched}</span>`
                                     })}</h3>
-                                    <p class="item-text"  ref="buiList1">${el.address}</p>
+                                    <p class="item-text"  ref="buiList1">${el.city_name}</p>
                                     <p class="item-text"  ref="buiList2">${el.content.replace(re, (matched) =>{
                                     return `<span style='color:red'>${matched}</span>`
                                     })}</p>
                                 </div>
-                                <span class="price">${el.views}</span>
+                                <span class="price">浏览数:${el.views}</span>
                             </li>`;
                 });
 
@@ -81,7 +94,7 @@
     });
 </script>
 <div id="app" style="margin-top:50px;">
-    <el-row :gutter="10">
+    <el-row :gutter="10" id="search-body">
         <el-col :xs="2" :sm="6"> &nbsp; </el-col>
         <el-col :xs="20" :sm="6">
             <el-input placeholder="请输入关键字" v-model="keyword" clearable>
@@ -168,19 +181,16 @@
                 ? '{:I("city_id")}'.split(",")
                 : [];
             this.city_name = '{:convert_city_id_to_name(I("city_id"))}'
-            ? '{:convert_city_id_to_name(I("city_id"))}'.split(",")
-            : [];  
-                setTimeout(() => {
-                    $('.el-select__tags-text').map((index, el ) => {
-                        el.innerHTML =  this.city_name[index];
-                    })
-
-                }, 0);
-            
+                ? '{:convert_city_id_to_name(I("city_id"))}'.split(",")
+                : [];
+            setTimeout(() => {
+                $(".el-select__tags-text").map((index, el) => {
+                    el.innerHTML = this.city_name[index];
+                });
+            }, 0);
         },
         methods: {
             search() {
-
                 location.href = `/index/index/search_result?keyword=${
                     this.keyword
                 }&city_id=${this.city_id.join(",")}`;
