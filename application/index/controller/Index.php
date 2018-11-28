@@ -25,7 +25,16 @@ class Index extends Frontend
     
     public function add()
     {
-        return $this->view->fetch();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+            dump($data = json_decode(file_get_contents('php://input'), true));
+            $temp_images = array_map(function ($v) {
+                return($v['response']['image_id']);
+            }, $data['images']);
+            $data['post_images'] = implode(",",$temp_images);
+        }else{
+            return $this->view->fetch();
+        }
+        
     }
 
     public function detail($id)

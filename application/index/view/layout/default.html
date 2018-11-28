@@ -25,6 +25,9 @@
                 .content{
                     height: 100vh;
                 }
+                nav{
+                    background: white;
+                }
             }
 
             @media (min-width: 767px){
@@ -54,8 +57,11 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="{:url('/')}" style="padding:6px 15px;"><img style="height:100%" src="/assets/img/casou.png"/></a>
+                    <a href="{:url('/index/index/add')}" >发信息</a>
+                    
                 </div>
                 <div class="collapse navbar-collapse" id="header-navbar">
+
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="/">{:__('Home')}</a></li>
                         <li><a href="https://www.fastadmin.net/store.html" target="_blank">{:__('Store')}</a></li>

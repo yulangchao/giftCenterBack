@@ -1,4 +1,3 @@
-
 <style>
     .el-upload__input {
         visibility: hidden;
@@ -24,8 +23,14 @@
             label-width="100px"
             style="max-width: 600px; width: 90vw; margin:auto;"
         >
+            <el-form-item label="标题" prop="title">
+                <el-input v-model="temp.title"></el-input>
+            </el-form-item>
             <el-form-item label="地址" prop="address">
-                <el-input v-model="temp.address" id="customer_address"></el-input>
+                <el-input
+                    v-model="temp.address"
+                    id="customer_address"
+                ></el-input>
             </el-form-item>
             <el-form-item label="联系电话">
                 <el-input v-model="temp.first_contact_phone"></el-input>
@@ -41,11 +46,13 @@
                 </el-form-item>
             -->
 
-            <el-form-item label="详情"> <div class="editor"></div> </el-form-item>
+            <el-form-item label="详情">
+                <div class="editor"></div>
+            </el-form-item>
 
             <el-upload
                 class="upload-demo"
-                action="http://canadabutler.com/Zhidao/Wy/upload"
+                action="/index/ajax/upload"
                 accept="image/*"
                 multiple
                 :on-preview="handlePreview"
@@ -102,46 +109,37 @@
                 fileList2: [],
                 temp: {
                     id: undefined,
+                    title: "",
                     address: "",
-                    first_contact: "",
-                    first_contact_phone: "",
-                    first_contact_name: "",
-                    second_contact_name: "",
-                    max_cost: "",
-                    second_contact: "",
-                    category: null,
-                    if_emergency: null,
-                    prefer_time: [""],
                     detail: "1",
                     images: [],
-                    videos: [],
-                    after_images: [],
-                    comments: []
+                    phone: "",
+                    lat: "",
+                    lng: "",
+                    city_name: ""
                 },
                 rules: {
-                    // type: [
-                    //     {
-                    //         required: true,
-                    //         message: "type is required",
-                    //         trigger: "change"
-                    //     }
-                    // ],
-                    address: [
+                    title: [
                         {
                             required: true,
-                            message: "地址是必须的",
-                            trigger: "blur"
+                            message: "title is required",
+                            trigger: "change"
                         }
                     ]
+                    // address: [
+                    //     {
+                    //         required: true,
+                    //         message: "地址是必须的",
+                    //         trigger: "blur"
+                    //     }
+                    // ]
                 }
             };
         },
-        mounted() {
-            
-        },
+        mounted() {},
         methods: {
             handleUpload(res, file, fileList) {
-                if (res.image_id) {
+                if (res.code) {
                     this.temp.images.push(file);
                 }
             },
@@ -155,25 +153,19 @@
             createData() {
                 this.$refs["dataForm"].validate(valid => {
                     if (valid) {
-                        console.log(this.temp);
-                        // createArticle(this.temp).then(res => {
-                        //     this.list.unshift(res.data);
-                        //     this.dialogFormVisible = false;
-                        //     this.$notify({
-                        //         title: "Successful",
-                        //         message: "Created Successfully",
-                        //         type: "success",
-                        //         duration: 2000
-                        //     });
-                        // });
+                        axios
+                            .post(
+                                "/index/index/add",
+                                JSON.stringify(this.temp)
+                            )
+                            .then(response => {
+                                console.log(response);
+                            });
                     }
                 });
             }
         }
     });
-
-    
-
 </script>
 <script
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDaINsjiL1DTKKjZneaPTvZQj6HTYZiGOU&libraries=places&language=en&callback=initAutocomplete"
