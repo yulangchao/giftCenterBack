@@ -4,6 +4,7 @@ namespace app\index\controller;
 
 use app\common\controller\Frontend;
 use app\common\library\Token;
+use app\admin\model\Posts;
 
 class Index extends Frontend
 {
@@ -26,12 +27,51 @@ class Index extends Frontend
     public function add()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST'){
-            dump($data = json_decode(file_get_contents('php://input'), true));
-            $temp_images = array_map(function ($v) {
-                return($v['response']['image_id']);
-            }, $data['images']);
-            $data['post_images'] = implode(",",$temp_images);
+            $data = json_decode(file_get_contents('php://input'), true);
+            // dump($data);
+            // $temp_images = array_map(function ($v) {
+            //     return($v['response']['data']['url']);
+            // }, $data['images']);
+            $data['post_images'] = implode(",",$data['images']);
+            $data['city_id'] = getCityIdFromCityName($data['city_name']);
+            $result = new Posts();
+            // 过滤post数组中的非数据表字段数据
+            $result->allowField(true)->save($data);
+            if($result){
+                return json(['success'=>true,'result'=>$result]);
+            }else{
+                return json(['success'=>false]);
+            }
         }else{
+            return $this->view->fetch();
+        }
+        
+    }
+
+    public function edit($id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+            $data = json_decode(file_get_contents('php://input'), true);
+            // $temp_images = array_map(function ($v) {
+            //     return($v['response']['data']['url']);
+            // }, $data['images']);
+            $data['post_images'] = implode(",",$data['images']);
+            $data['city_id'] = getCityIdFromCityName($data['city_name']);
+            $data['id'] = $id;
+            unset( $data['images']);
+            unset( $data['city_name']);
+            $result = $this->model->update($data);
+            if($result){
+                return json(['success'=>true,'result'=>$result]);
+            }else{
+                return json(['success'=>false]);
+            }
+            
+        }else{
+            $post = db('posts')->find($id);
+            $post['city_name'] = get_city_name($post['city_id']);
+            // $post['post_images'] = explode(",",$post['post_images']);
+            $this->assign('post',$post);
             return $this->view->fetch();
         }
         
@@ -39,9 +79,11 @@ class Index extends Frontend
 
     public function detail($id)
     {
+        db('posts')->where('id', $id)->setInc('views');
         $detail = $this->model
         ->with(['cities'])
         ->find($id);
+        
         $detail = $detail->toArray();
         $this->view->assign('detail', $detail);
         return $this->view->fetch();
@@ -82,6 +124,8 @@ class Index extends Frontend
         foreach ($posts as $key => &$post) {
            $post['content'] = strip_tags($post['content']);
            $post['city_name'] = get_city_name($post['city_id']);
+           $post['post_images'] = Explode(',',$post['post_images']);
+           $post['createtime'] = time_elapsed_string("@".$post['createtime']);
         }
         $data = [
             "code"=> 1,

@@ -1,4 +1,5 @@
 <?php
+// use app\admin\model\Cities;
 
 function search($text = "温哥华知道吧crab")
 {
@@ -37,6 +38,50 @@ function search($text = "温哥华知道吧crab")
      
     return $condition;  
 }
+
+function getCityIdFromCityName($city_name){
+	$city = db('cities')->where('city_name','=',$city_name)->find();
+	if ($city){
+		return $city['id'];
+	}else{
+		$city_id = db('cities')->insertGetId(['city_name'=>$city_name,'createtime'=>time(),'updatetime'=>time()]);
+		return $city_id;
+	}
+    
+}
+
+
+function time_elapsed_string($datetime, $full = false) {
+    $now = new DateTime;
+    $ago = new DateTime($datetime);
+    $diff = $now->diff($ago);
+
+    $diff->w = floor($diff->d / 7);
+    $diff->d -= $diff->w * 7;
+
+    $string = array(
+        'y' => 'year',
+        'm' => 'month',
+        'w' => 'week',
+        'd' => 'day',
+        'h' => 'hour',
+        'i' => 'min',
+        's' => 'sec',
+    );
+    foreach ($string as $k => &$v) {
+        if ($diff->$k) {
+            $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+        } else {
+            unset($string[$k]);
+        }
+    }
+
+    if (!$full) $string = array_slice($string, 0, 1);
+    return $string ? implode(', ', $string) . ' ago' : 'just now';
+}
+
+
+
 function convert_city_id_to_name($city_id){
     $cities = db('cities')->where('id','in',$city_id)->select();
     $cities = array_map(function($city){

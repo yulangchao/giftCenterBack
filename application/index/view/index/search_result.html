@@ -13,7 +13,9 @@
         font-size: 0.4rem;
         margin-right: 0.2rem;
     }
-    .item-text,.bui-loading .bui-loading-text,.bui-scroll-head{
+    .item-text,
+    .bui-loading .bui-loading-text,
+    .bui-scroll-head {
         font-size: 16px;
     }
     .bui-thumbnail {
@@ -24,8 +26,31 @@
         border-bottom: 1px solid #d4c5c5;
         padding-bottom: 20px;
     }
-
-
+    #item-content {
+        height: 20px;
+        line-height: 20px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    @media (max-width: 767px){
+        #scrollList{
+            /* Firefox */
+            height: -moz-calc(100vh - 276px) !important;
+            /* WebKit */
+            height: -webkit-calc(100vh - 276px) !important;
+            /* Opera */
+            height: -o-calc(100vh - 276px) !important;
+            /* Standard */
+            height: calc(100vh - 276px) !important;
+        }
+    }
+    @media (min-width: 767px){
+        #scrollList{
+            /* Firefox */
+            height: auto !important
+        }
+    }
 </style>
 <script>
     let lock = false;
@@ -70,21 +95,24 @@
                             subClass = "";
                             break;
                     }
-
+                    console.log(el.post_images);
                     html += `<li class="bui-btn bui-box" onclick="location.href='/index/index/detail?id=${el.id}'">
-                                <div class="bui-thumbnail ${subClass}" data-sub="${sub}"><img src="${
-                        el.post_images
+                                <div class="bui-thumbnail ${subClass}"  style="height:80px;" data-sub="${sub}"><img style="height:100%" src="${
+                        el.post_images[0] !="" ? el.post_images[0]:" http://via.placeholder.com/280X200?text=No%20Image"
                     }" alt=""></div>
                                 <div class="span1">
                                     <h3 class="item-title"  ref="buiList">${el.title.replace(re, (matched) =>{
                                     return `<span style='color:red'>${matched}</span>`
                                     })}</h3>
                                     <p class="item-text"  ref="buiList1">${el.city_name}</p>
-                                    <p class="item-text"  ref="buiList2">${el.content.replace(re, (matched) =>{
+                                    <p class="item-text" id="item-content" ref="buiList2">${el.content.replace(re, (matched) =>{
                                     return `<span style='color:red'>${matched}</span>`
                                     })}</p>
                                 </div>
-                                <span class="price">浏览数:${el.views}</span>
+                                <span  style="height:17px;margin-top: -37px;" class="time"><i style="height:17px;" class="icon-"></i>${el.createtime}
+                                    <span class="time" style="position: absolute; right: 10px; margin-top: 30px;"><i style="height:17px;" class="icon-"></i>${el.views}</span>
+                                </span>
+
                             </li>`;
                 });
 
@@ -97,7 +125,7 @@
     <el-row :gutter="10" id="search-body">
         <el-col :xs="2" :sm="6"> &nbsp; </el-col>
         <el-col :xs="20" :sm="6">
-            <el-input placeholder="请输入关键字" v-model="keyword" clearable>
+            <el-input placeholder="请输入关键字"  @keyup.enter.native="search" v-model="keyword" clearable>
             </el-input>
         </el-col>
         <el-col :xs="2" :sm="0" style="height:40px;">

@@ -30,6 +30,8 @@ define(['jquery', 'bootstrap', 'backend', 'table', 'form'], function ($, undefin
                         {field: 'user_id', title: __('User_id')},
                         {field: 'address', title: __('Address')},
                         {field: 'phone', title: __('Phone')},
+                        {field: 'wechat', title: __('Wechat')},
+                        {field: 'email', title: __('Email')},
                         {field: 'city_id', title: __('City_id')},
                         {field: 'views', title: __('Views')},
                         {field: 'if_active_switch', title: __('If_active_switch'), searchList: {"1":__('Yes'),"0":__('No')}, formatter: Table.api.formatter.toggle},

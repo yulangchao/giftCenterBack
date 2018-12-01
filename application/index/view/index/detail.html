@@ -1,0 +1,480 @@
+<link rel="stylesheet" href="https://unpkg.com/buijs/lib/latest/bui.css" />
+<!-- bui.js 依赖于Zepto或jQuery -->
+<script src="https://unpkg.com/buijs/lib/zepto.js"></script>
+<script src="https://unpkg.com/buijs/lib/latest/bui.js"></script>
+<script src="/assets/js/frontend/clipboard.min.js"></script>
+<link rel="stylesheet" href="/assets/css/swipebox.css" />
+<link
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"
+    integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous"
+/>
+<style type="text/css">
+    .el-carousel__item h3 {
+        color: #475669;
+        font-size: 14px;
+        opacity: 0.75;
+        line-height: 200px;
+        margin: 0;
+    }
+
+    .el-carousel__item:nth-child(2n) {
+        background-color: #99a9bf;
+    }
+
+    .el-carousel__item:nth-child(2n + 1) {
+        background-color: #d3dce6;
+    }
+    #uiDoropdown .bui-box {
+        padding: 0px 10px;
+    }
+    .bui-check {
+        position: relative;
+    }
+
+    .bui-check label {
+        background: #f8f8f8;
+        border: 1px solid #b4b4b4;
+    }
+
+    .bui-check input:checked ~ label {
+        background: #eb413d;
+        color: #fff;
+        border: 1px solid #eb413d;
+    }
+
+    .bui-check .bui-badges {
+        position: absolute;
+        top: -0.06rem;
+        right: -20%;
+        font-size: 0.1rem;
+        border-radius: 0.06rem;
+        height: 0.16rem;
+        line-height: 0.16rem;
+    }
+    #page {
+        max-width: 1024px;
+        margin: auto;
+    }
+
+    .shortcut-nav {
+        margin-top: 0.2rem;
+    }
+
+    .shortcut-nav [class*="bui-btn"] {
+        padding: 0.15rem 0;
+        border: none;
+    }
+
+    .shortcut-nav [class*="bui-btn"] .icon {
+        color: #ffffff;
+        height: 0.7rem;
+        width: 0.7rem;
+        border-radius: 50%;
+        line-height: 0.7rem;
+        margin: 0.1rem 0;
+        font-size: 0.5rem;
+    }
+
+    .short1 {
+        background-color: #1896d6;
+    }
+
+    .short2 {
+        background-color: #cf85c6;
+    }
+
+    .short3 {
+        background-color: #40afcc;
+    }
+
+    .short4 {
+        background-color: #ed758e;
+    }
+
+    /* 列表 */
+
+    .news-list {
+        border-top: none;
+        margin-top: 0.2rem;
+        padding: 0 0.2rem;
+        background-color: #ffffff;
+    }
+
+    .news-list .bui-btn {
+        padding: 0.2rem 0;
+        border: none;
+        border-top: 1px solid #efefef;
+    }
+
+    .news-list .thumbnail {
+        width: 1.4rem;
+        height: 1rem;
+        background: #a6a6a6;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .news-list .thumbnail img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .news-list li:first-child {
+        border-top: none;
+    }
+
+    .news-list .time {
+        margin-left: 0.15rem;
+        font-size: 0.17rem;
+    }
+
+    .news-list .icon- {
+        font-size: 0.17rem;
+        margin-right: 0.05rem;
+    }
+
+    .news-list .item-title {
+        font-size: 0.22rem;
+        height: 0.4rem;
+        overflow: hidden;
+        line-height: 1.3;
+    }
+
+    .news-list .item-text {
+        font-size: 0.17rem;
+    }
+
+    .bui-bar .bui-bar-left,
+    .bui-bar .bui-bar-right {
+        overflow: initial !important;
+        width: auto;
+    }
+
+    .bui-bar .bui-bar-right ul {
+        left: auto;
+        width: 120px;
+    }
+
+    .bui-bar .fas {
+        margin: 0px 5px;
+    }
+
+    #cityDoropdown li,
+    #actionDoropdown li {
+        width: 120px !important;
+    }
+    .bui-panel {
+        margin-top: 0;
+    }
+
+    .cate-list .span4 {
+        margin: 5px 0px;
+    }
+
+    #uiDoropdown .cate-panel {
+        /* Firefox */
+        min-height: -moz-calc(100vh - 200px);
+        /* WebKit */
+        min-height: -webkit-calc(100vh - 200px);
+        /* Opera */
+        min-height: -o-calc(100vh - 200px);
+        /* Standard */
+        min-height: calc(100vh - 200px);
+    }
+    #scrollList {
+        margin-top: 0px;
+    }
+    .fa-map-marker-alt {
+        color: #1ccfbf !important;
+    }
+    .bui-label {
+        font-weight: bold;
+    }
+
+    .edit-btn {
+        padding: 4px 20px;
+        background-color: #337ab7;
+        border-color: #2e6da4;
+        border-radius: 10px;
+        color: white !important;
+        font-weight: bold;
+    }
+    .delete-btn {
+        padding: 4px 20px;
+        background-color: #d9534f;
+        border-color: #d43f3a;
+        border-radius: 10px;
+        color: white !important;
+        font-weight: bold;
+    }
+    #slide {
+        background-image: url(http://via.placeholder.com/280X200?text=No%20Image);
+        background-size: 100vw 100%;
+    }
+    @media (max-width: 767px) {
+        #swipebox-close {
+            left: 0px;
+        }
+    }
+
+    @media (min-width: 767px) {
+        main {
+            background: white !important;
+            height: auto !important;
+        }
+        #mobile-list {
+            display: none;
+        }
+        h1 {
+            font-size: 26px;
+        }
+        label,
+        a,
+        div {
+            font-size: 16px;
+        }
+        #page {
+            margin-top: 50px;
+            box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.1);
+
+            border-radius: 10px;
+            padding: 20px;
+        }
+    }
+</style>
+<div id="page" class="bui-page">
+    <main>
+        <el-row :gutter="10">
+            <el-col :xs="24" :sm="12" style="background:#b192923d">
+                <el-carousel
+                    :interval="4000"
+                    type="card"
+                    height="200px"
+                    style="margin-top:50px;"
+                >
+                    <el-carousel-item
+                        v-for="image in '{$detail['post_images']}'.split(',')"
+                        
+                    >
+                        <div style="height: 100%;" v-if="'{$detail['post_images']}' != ''">
+                            <a
+                                :href="image"
+                                class="swipebox"
+                                title="My Caption"
+                            >
+                                <img
+                                    style="width:100%;height: 100%;max-width:680px;"
+                                    :src="image"
+                                />
+                            </a>
+                        </div>
+                    </el-carousel-item>
+                </el-carousel>
+            </el-col>
+            <el-col :xs="0" :sm="12">
+                <ul
+                    class="bui-list contact-list"
+                    id="pc-list"
+                    style="    margin-top: 60px;    margin-top: 20px;padding: 17px;"
+                >
+                    <li class="bui-btn bui-box clearactive">
+                        <label class="bui-label">电话</label>
+                        <div class="span1">
+                            <div class="bui-value">
+                                <a
+                                    style="color: blue;border-bottom: 1px solid blue;"
+                                    href="tel:{$detail.phone}"
+                                    >{$detail.phone}</a
+                                >
+                            </div>
+                        </div>
+                    </li>
+                    <li class="bui-btn bui-box clearactive">
+                        <label class="bui-label">邮箱</label>
+                        <div class="span1">
+                            <div class="bui-value">
+                                {$detail.email}
+
+                            </div>
+                            <div
+                                style="width: 50px; float: right;"
+                                data-clipboard-text="{$detail.email}"
+                                class="bui-btn primary small test-btn-email"
+                            >
+                                复制
+                            </div>
+                        </div>
+                    </li>
+                    <li class="bui-btn bui-box clearactive">
+                        <label class="bui-label">微信</label>
+                        <div class="span1">
+                            <div class="bui-value">
+                                {$detail.wechat}
+
+                            </div>
+                            <div
+                                style="width: 50px; float: right;"
+                                data-clipboard-text="{$detail.wechat}"
+                                class="bui-btn primary small test-btn"
+                            >
+                                复制
+                            </div>
+                        </div>
+                    </li>
+                    <li class="bui-btn bui-box clearactive">
+                        <label class="bui-label">城市</label>
+                        <div class="span1">
+                            <div class="bui-value">{$detail.city_id}</div>
+                        </div>
+                    </li>
+                    <li class="bui-btn bui-box clearactive">
+                        <label class="bui-label">地址</label>
+                        <div class="span1">
+                            <div class="bui-value">{$detail.address}</div>
+                        </div>
+                    </li>
+                </ul>
+            </el-col>
+        </el-row>
+
+        <!-- 快捷入口 -->
+        <div
+            id="uiDoropdown"
+            class="bui-dropdown"
+            style="padding:10px;background:white;margin-bottom:5px"
+        >
+            <h1 style="padding-bottom: 3px;">
+                {$detail.title}<span style="float:right;font-size:14px"
+                    >浏览数: {$detail.views}</span
+                >
+            </h1>
+            <p>
+                <span style="color: #09d912;font-weight:bold"
+                    >{:date("Y/m/d H:i", $detail['createtime'])}</span
+                >
+                <span style="float:right"></span>
+            </p>
+            <p v-if="1">
+                <span style="color: #09d912;font-weight:bold;visibility:hidden"
+                    >Your Info</span
+                >
+                <span style="float:right"
+                    ><a
+                        class="edit-btn"
+                        href="/index/index/edit?id={$detail.id}"
+                        >编辑</a
+                    >
+                    <a class="delete-btn" href="javascript:;">删除</a></span
+                >
+            </p>
+        </div>
+
+        <ul class="bui-list contact-list" id="mobile-list">
+            <li class="bui-btn bui-box clearactive">
+                <label class="bui-label">电话</label>
+                <div class="span1">
+                    <div class="bui-value">
+                        <a
+                            style="color: blue;border-bottom: 1px solid blue;"
+                            href="tel:{$detail.phone}"
+                            >{$detail.phone}</a
+                        >
+                    </div>
+                </div>
+            </li>
+            <li class="bui-btn bui-box clearactive">
+                <label class="bui-label">邮箱</label>
+                <div class="span1">
+                    <div class="bui-value">
+                        {$detail.email}
+
+                    </div>
+                    <div
+                        style="width: 50px; float: right;"
+                        data-clipboard-text="{$detail.email}"
+                        class="bui-btn primary small test-btn-email"
+                    >
+                        复制
+                    </div>
+                </div>
+            </li>
+            <li class="bui-btn bui-box clearactive">
+                <label class="bui-label">微信</label>
+                <div class="span1">
+                    <div class="bui-value">
+                        {$detail.wechat}
+
+                    </div>
+                    <div
+                        style="width: 50px; float: right;"
+                        data-clipboard-text="{$detail.wechat}"
+                        class="bui-btn primary small test-btn"
+                    >
+                        复制
+                    </div>
+                </div>
+            </li>
+            <li class="bui-btn bui-box clearactive">
+                <label class="bui-label">城市</label>
+                <div class="span1">
+                    <div class="bui-value">{$detail.city_id}</div>
+                </div>
+            </li>
+            <li class="bui-btn bui-box clearactive">
+                <label class="bui-label">地址</label>
+                <div class="span1">
+                    <div class="bui-value">{$detail.address}</div>
+                </div>
+            </li>
+        </ul>
+
+        <div
+            style="background:white;padding:10px;margin:5px 0px;min-height:300px;"
+            class=" bui-panel-main answer-li-main"
+        >
+            <label class="bui-label">内容</label>
+            <div class="">{$detail.content}</div>
+        </div>
+    </main>
+</div>
+<script>
+    var copy = new Clipboard(".test-btn");
+
+    copy.on("success", function(e) {
+        console.info("Action:", e.action);
+        console.info("Text:", e.text);
+        console.info("Trigger:", e.trigger);
+        bui.hint({
+            content: "<i class='icon-check'></i><br />复制成功！",
+            position: "center",
+            effect: "fadeInDown"
+        });
+    });
+
+    var copy_email = new Clipboard(".test-btn-email");
+
+    copy_email.on("success", function(e) {
+        console.info("Action:", e.action);
+        console.info("Text:", e.text);
+        console.info("Trigger:", e.trigger);
+        bui.hint({
+            content: "<i class='icon-check'></i><br />复制成功！",
+            position: "center",
+            effect: "fadeInDown"
+        });
+    });
+
+    copy.on("error", function(e) {
+        console.error("Action:", e.action);
+        console.error("Trigger:", e.trigger);
+    });
+
+    new Vue({
+        el: "#page",
+        data: {},
+        computed: {},
+        methods: {}
+    });
+</script>

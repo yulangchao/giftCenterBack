@@ -41,6 +41,7 @@
             <el-form-item label="邮箱">
                 <el-input v-model="temp.email"></el-input>
             </el-form-item>
+
             <!--
                 <el-form-item :label="$t('table.category')">
                     <el-select class="filter-item" v-model="temp.category" placeholder="Please select">
@@ -69,10 +70,11 @@
                 <el-button size="small" type="primary">上传图片</el-button>
                 <div slot="tip" class="el-upload__tip"></div>
             </el-upload>
+            
             <br />
             <el-row>
                 <el-button @click="location.href='/'">返回</el-button>
-                <el-button type="primary" :loading="loading" @click="createData">提交</el-button>
+                <el-button type="primary"  :loading="loading" @click="createData">提交</el-button>
             </el-row>
         </el-form>
     </el-row>
@@ -113,23 +115,23 @@
                 fileList2: [],
                 loading: false,
                 temp: {
-                    id: undefined,
-                    title: "",
-                    address: "",
-                    content: "1",
+                    id: "{$post.id}",
+                    title: "{$post.title}",
+                    address: "{$post.address}",
+                    content: `{$post.content}`,
                     images: [],
-                    phone: "",
-                    lat: "",
-                    lng: "",
-                    city_name: "",
-                    wechat:"",
-                    email:""
+                    phone: "{$post.phone}",
+                    lat: "{$post.lat}",
+                    lng: "{$post.lng}",
+                    city_name: "{$post.city_name}",
+                    wechat:"{$post.wechat}",
+                    email:"{$post.email}"
                 },
                 rules: {
                     title: [
                         {
                             required: true,
-                            message: "title is required",
+                            message: "请填写标题",
                             trigger: "change"
                         }
                     ]
@@ -143,11 +145,23 @@
                 }
             };
         },
-        mounted() {},
+        mounted() {
+            if ("{$post.post_images}"){
+                this.temp.images = "{$post.post_images}".split(',');
+                let i = 0;
+                for (let image of this.temp.images){
+                    
+                    this.fileList2.push({"status":"success","name":"微信截图_20181127134439.png","size":5643,"percentage":100,"uid":1543440430138+(i++),"raw":{"uid":1543440430138+(i++)},"url":image,"response":{"code":1,"msg":"Upload successful","time":"1543440430","data":{"url":image}}});
+                }
+            }
+
+            console.log("{$post.post_images}".split(','));
+            document.getElementsByClassName('note-editable').innerHtml=`{$post.content}`
+        },
         methods: {
             handleUpload(res, file, fileList) {
+                console.log(file);
                 if (res.code) {
-                    
                     this.temp.images.push(file.response.data.url);
                 }
             },
@@ -164,7 +178,7 @@
                     if (valid) {
                         axios
                             .post(
-                                "/index/index/add",
+                                "/index/index/edit?id={:I('id')}",
                                 JSON.stringify(this.temp)
                             )
                             .then(response => {
@@ -172,8 +186,8 @@
                                     location.href=`/index/index/detail?id=${response.data.result.id}`
                                     this.loading = false;
                                 }else{
-                                    alert("添加失败，请稍后重试！");
                                     this.loading = false;
+                                    alert("修改失败，请稍后重试！");
                                 }
                             });
                     }else{

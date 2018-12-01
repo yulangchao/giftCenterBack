@@ -20,7 +20,7 @@
         <el-col :xs="2" :sm="6"> &nbsp; </el-col>
         <el-col :xs="20" :sm="6">
                 
-            <el-input placeholder="请输入关键字" v-model="keyword" clearable>
+            <el-input placeholder="请输入关键字"   @keyup.enter.native="search" v-model="keyword" clearable>
             </el-input>
         </el-col>
         <el-col :xs="2" :sm="0" style="height:40px;">
