@@ -160,6 +160,7 @@
         },
         methods: {
             handleUpload(res, file, fileList) {
+                alert(JSON.stringify(res));
                 console.log(file);
                 if (res.code) {
                     this.temp.images.push(file.response.data.url);
