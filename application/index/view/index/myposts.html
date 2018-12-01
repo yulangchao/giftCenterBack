@@ -34,15 +34,18 @@
         text-overflow: ellipsis;
     }
     @media (max-width: 767px){
+        #search-body {
+             padding-bottom: 0px;
+        }
         #scrollList{
             /* Firefox */
-            height: -moz-calc(100vh - 260px) !important;
+            height: -moz-calc(100vh - 140px) !important;
             /* WebKit */
-            height: -webkit-calc(100vh - 260px) !important;
+            height: -webkit-calc(100vh - 140px) !important;
             /* Opera */
-            height: -o-calc(100vh - 260px) !important;
+            height: -o-calc(100vh - 140px) !important;
             /* Standard */
-            height: calc(100vh - 260px) !important;
+            height: calc(100vh - 140px) !important;
         }
         footer{
             margin-top:0px !important;
@@ -71,9 +74,9 @@
             url: "/index/index/getInfo",
             pageSize: 10,
             data: {
-                keyword: '{:I('keyword')}',
-                city_id: '{:I('city_id')}',
-                type: '{:I('type')}'
+                keyword: '',
+                city_id: '',
+                type: 'me'
             },
             //如果分页的字段名不一样,通过field重新定义
             field: {
@@ -135,53 +138,11 @@
 </script>
 <div id="app" style="padding-top:50px;">
     <el-row :gutter="10" id="search-body">
-        <el-col :xs="2" :sm="6"> &nbsp; </el-col>
-        <el-col :xs="20" :sm="6">
-            <el-input placeholder="请输入关键字"  @keyup.enter.native="search" v-model="keyword" clearable>
-            </el-input>
+        <el-col :xs="1" :sm="6"> &nbsp; </el-col>
+        <el-col :xs="22" :sm="6">
+            <span style="font-size: 20px;font-weight: bold;">我的信息</span>
         </el-col>
-        <el-col :xs="2" :sm="0" style="height:40px;">
-            <span>&nbsp;</span>
-        </el-col>
-        <el-col :xs="2" :sm="0">
-            <span style="height:40px;">&nbsp;</span>
-        </el-col>
-        <el-col :xs="20" :sm="4">
-            <el-select
-                v-model="city_id"
-                multiple
-                filterable
-                remote
-                reserve-keyword
-                placeholder="请选择城市"
-                :remote-method="remoteMethod"
-                :loading="loading"
-            >
-                <el-option
-                    v-for="item in options4"
-                    :key="item.id"
-                    :label="item.city_name"
-                    :value="item.id"
-                >
-                </el-option>
-            </el-select>
-        </el-col>
-        <el-col :xs="2" :sm="0" style="height:40px;">
-            <span>&nbsp;</span>
-        </el-col>
-        <el-col :xs="2" :sm="0" style="height:40px;">
-            <span>&nbsp;</span>
-        </el-col>
-        <el-col :xs="20" :sm="2" style="text-align: center">
-            <el-button
-                type="primary"
-                style="max-width:100%;width:300px;"
-                icon="el-icon-search"
-                @click="search"
-                >搜索</el-button
-            >
-        </el-col>
-        <el-col :xs="2" :sm="6" style="height:40px;">
+        <el-col :xs="1" :sm="0" style="height:40px;">
             <span>&nbsp;</span>
         </el-col>
     </el-row>

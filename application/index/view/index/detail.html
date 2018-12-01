@@ -366,7 +366,8 @@
                         href="/index/index/edit?id={$detail.id}"
                         >编辑</a
                     >
-                    <a class="delete-btn" href="javascript:;">删除</a></span
+                    
+                    <a class="delete-btn" @click="deletePost" href="javascript:;">删除</a></span
                 >
             </p>
         </div>
@@ -452,7 +453,6 @@
             effect: "fadeInDown"
         });
     });
-
     var copy_email = new Clipboard(".test-btn-email");
 
     copy_email.on("success", function(e) {
@@ -475,6 +475,16 @@
         el: "#page",
         data: {},
         computed: {},
-        methods: {}
+        methods: {
+            deletePost(){
+                bui.confirm("确认删除此信息吗？", (e) => {
+                    var text = e.target.innerHTML;
+                    if( text == "确定" ){
+                        //do something
+                        location.href="/index/index/delete?id={:I('id')}"
+                    }
+                });
+            }
+        }
     });
 </script>

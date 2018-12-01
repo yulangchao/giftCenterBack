@@ -71,7 +71,11 @@ require(['form', 'upload'], function (Form, Upload) {
                             "Open Sans", "Microsoft YaHei",
                             '微软雅黑', '宋体', '黑体', '仿宋', '楷体', '幼圆'
                         ],
-                        toolbar: [
+                        toolbar: innerWidth < 768 ? [
+                            ['font', ['bold', 'underline', 'strikethrough', 'clear']],
+                            ['para', ['ul', 'ol', 'paragraph', 'height']],
+                            ['insert', ['link', 'picture', 'video']],
+                        ]: [
                             ['style', ['style', 'undo', 'redo']],
                             ['font', ['bold', 'underline', 'strikethrough', 'clear']],
                             ['fontname', ['color', 'fontname', 'fontsize']],

@@ -45,7 +45,25 @@
                 }
                 .sendInfo {
                     margin-right: 40px;
+                    position: absolute;
+                    right: 10px;
+                    top: 50px;
                 }
+                footer{
+                    display: none !important;
+                }
+                main.content{
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                }
+                .note-toolbar{
+                    position: relative !important;
+                }
+                #post-content .el-form-item__content{
+                    margin-top: 50px;
+                    margin-left: 0px !important;
+                }
+
             }
 
             @media (min-width: 767px) {
@@ -59,8 +77,9 @@
                     background: white;
                 }
                 .sendInfo {
-                    margin-right: 120px;
+                    margin-right: 160px;
                 }
+
             }
         </style>
         <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
@@ -77,8 +96,8 @@
             style="position:absolute;z-index:10000;height:100vh;width: 100vw;background:white;"
         >
             <img
-                style="position: absolute; left: 0; right: 0; margin: auto; top: 0; bottom: 0;"
-                src="https://colinbendell.cloudinary.com/image/upload/c_crop,f_auto,g_auto,h_350,w_400/v1512090971/Wizard-Clap-by-Markus-Magnusson.gif"
+                style="position: absolute; left: 0; right: 0; margin: auto; top: 0; bottom: 0;max-width: 100vw;"
+                src="https://cdn-images-1.medium.com/max/1600/0*cWpsf9D3g346Va20.gif"
             />
         </div>
 
@@ -97,7 +116,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" style="padding:6px 15px;"
-                        ><img style="height:100%" src="/assets/img/casou.png"
+                        ><img style="height:100%" src="/assets/img/logojiasou.png"
                     /></a>
                 </div>
                 <div class="collapse navbar-collapse" id="header-navbar">
@@ -129,6 +148,12 @@
                             {/if}
                             <ul class="dropdown-menu">
                                 {if $user}
+                                <li>
+                                    <a href="{:url('/index/index/myposts')}"
+                                        ><i class="fa fa-info fa-fw"></i
+                                        >{:__('我的Posts')}</a
+                                    >
+                                </li>
                                 <li>
                                     <a href="{:url('user/index')}"
                                         ><i class="fa fa-user-circle fa-fw"></i

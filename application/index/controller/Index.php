@@ -9,7 +9,7 @@ use app\admin\model\Posts;
 class Index extends Frontend
 {
 
-    protected $noNeedLogin = '*';
+    protected $noNeedLogin = ['index','detail','getInfo','getCities','search_result'];
     protected $noNeedRight = '*';
     protected $layout = 'default';
 
@@ -17,6 +17,7 @@ class Index extends Frontend
     {
         parent::_initialize();
         $this->model = new \app\admin\model\Posts;
+        
     }
 
     public function index()
@@ -26,6 +27,7 @@ class Index extends Frontend
     
     public function add()
     {
+        $user = $this->auth->getUser();
         if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             $data = json_decode(file_get_contents('php://input'), true);
             // dump($data);
@@ -34,6 +36,7 @@ class Index extends Frontend
             // }, $data['images']);
             $data['post_images'] = implode(",",$data['images']);
             $data['city_id'] = getCityIdFromCityName($data['city_name']);
+            $data['user_id'] = $user->id;
             $result = new Posts();
             // 过滤post数组中的非数据表字段数据
             $result->allowField(true)->save($data);
@@ -47,9 +50,31 @@ class Index extends Frontend
         }
         
     }
+    public function delete($id)
+    {
+        $post = db('posts')->find($id);
+        $user = $this->auth->getUser();
+        if ($post['user_id'] != $user->id){
+            $this->error(__('你没有权限删除这个信息。'));
+        }
+        if ($id) {
+            $list = $this->model->where('id', $id)->delete();
+
+            if($list){
+                $this->success(__('删除成功'), url('/index/index/myposts'));
+            }else{
+                $this->error(__('删除失败'));
+            }
+        }
+    }
 
     public function edit($id)
     {
+        $post = db('posts')->find($id);
+        $user = $this->auth->getUser();
+        if ($post['user_id'] != $user->id){
+            $this->error(__('你没有权限编辑这个信息。'));
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             $data = json_decode(file_get_contents('php://input'), true);
             // $temp_images = array_map(function ($v) {
@@ -68,7 +93,7 @@ class Index extends Frontend
             }
             
         }else{
-            $post = db('posts')->find($id);
+            
             $post['city_name'] = get_city_name($post['city_id']);
             // $post['post_images'] = explode(",",$post['post_images']);
             $this->assign('post',$post);
@@ -97,18 +122,10 @@ class Index extends Frontend
         $city_id = $this->request->request('city_id');
         $condition = search($keyword);
         $where = [];
+        
         $type = $this->request->request('type');
-        if (isset($type)) {
-            if ($type <= 1) {
-
-            } else if ($type == 2) {
-                // $records = db('record')->where(['user_id' => $user->id])->field('gift_id')->select();
-                // $record_ids = array_map(function($r){
-                //     return $r['gift_id'];
-                // },$records);
-                // $where['id'] = ['in',$record_ids];
-                
-            }
+        if ($type == "me") {
+                $where['user_id'] = $user->id;
         }
 
         $page = $this->request->request('page') ? $this->request->request('page') : 1;
@@ -151,6 +168,11 @@ class Index extends Frontend
     public function search_result()
     {
         convert_city_id_to_name(1);
+        return $this->view->fetch();
+    }
+    
+    public function myposts()
+    {
         return $this->view->fetch();
     }
 
