@@ -51,7 +51,7 @@
                 </el-form-item>
             -->
 
-            <el-form-item label="详情"  id="post-content">
+            <el-form-item label="详情"  id="post-content"  prop="content">
                 <textarea class="editor" v-model="temp.content"></textarea>
             </el-form-item>
 
@@ -116,7 +116,7 @@
                     id: undefined,
                     title: "",
                     address: "",
-                    content: "1",
+                    content: "",
                     images: [],
                     phone: "",
                     lat: "",
@@ -129,17 +129,17 @@
                     title: [
                         {
                             required: true,
-                            message: "title is required",
+                            message: "请填写标题",
                             trigger: "change"
                         }
+                    ],
+                    content: [
+                        {
+                            required: true,
+                            message: "内容是必须的",
+                            trigger: "blur"
+                        }
                     ]
-                    // address: [
-                    //     {
-                    //         required: true,
-                    //         message: "地址是必须的",
-                    //         trigger: "blur"
-                    //     }
-                    // ]
                 }
             };
         },
@@ -159,6 +159,31 @@
                 console.log(file);
             },
             createData() {
+
+                if (this.temp.title.length<5 && this.temp.title.length>20){
+                    this.$message({
+                    message: 
+                    '请填写至少5-20个字以内的标题',
+                    type: 'warning'});
+                    return;
+                }
+                if (this.temp.phone.length<10 && this.temp.wechat == "" && this.temp.email==""){
+                    this.$message({
+                    message: 
+                    '请至少填写一个联系方式，电话为10位',
+                    type: 'warning'});
+                    return;
+                }
+                if (this.temp.content.length<10){
+                    this.$message({
+                    message: 
+                    '请填写至少10个字以上的内容',
+                    type: 'warning'});
+                    return;
+                }
+
+
+
                 this.loading = true;
                 this.$refs["dataForm"].validate(valid => {
                     if (valid) {
